@@ -1,0 +1,115 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Get a free hosted Postgres database in seconds: `npx create-db`
+
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model User {
+  id        Int      @id @default(autoincrement())
+  name      String
+  email     String   @unique
+  password  String
+  role      Role
+  status    Status   @default(ACTIVE)
+  createdAt DateTime @default(now())
+
+  transactions  Transaction[]
+  bills         Bill[]
+  goals         Goal[]
+  recurring     RecurringTransaction[]
+}
+
+model Transaction {
+  id           Int      @id @default(autoincrement())
+  userId       Int
+  categoryName String
+  amount       Float
+  type         TransactionType
+  date         DateTime
+  notes        String?
+  createdAt    DateTime @default(now())
+
+  user     User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Bill {
+  id           String   @id @default(cuid())
+  userId       Int
+  name         String
+  amount       Float
+  dueDate      DateTime
+  category     String
+  isPaid       Boolean  @default(false)
+  isRecurring  Boolean  @default(false)
+  frequency    BillFrequency?
+  notes        String?
+  createdAt    DateTime @default(now())
+
+  user     User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Goal {
+  id             String   @id @default(cuid())
+  userId         Int
+  name           String
+  targetAmount   Float
+  currentAmount  Float    @default(0)
+  deadline       DateTime
+  category       String?
+  createdAt      DateTime @default(now())
+
+  user     User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model RecurringTransaction {
+  id           String   @id @default(cuid())
+  userId       Int
+  categoryName String
+  amount       Float
+  type         TransactionType
+  frequency    BillFrequency
+  startDate    DateTime
+  nextDate     DateTime
+  notes        String?
+  isActive     Boolean  @default(true)
+  createdAt    DateTime @default(now())
+
+  user     User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Category {
+  id           Int    @id @default(autoincrement())
+  name         String @unique
+  type         TransactionType
+  amount       Float
+}
+
+enum Role {
+  VIEWER
+  ANALYST
+  ADMIN
+}
+
+enum Status {
+  ACTIVE
+  INACTIVE
+}
+
+enum TransactionType {
+  INCOME
+  EXPENSE
+}
+
+enum BillFrequency {
+  WEEKLY
+  MONTHLY
+  YEARLY
+}
