@@ -10,8 +10,6 @@
 
 *A comprehensive financial management platform with real-time analytics, bill tracking, goal setting, and intelligent expense categorization.*
 
-[Features](#-features) • [Tech Stack](#-tech-stack) • [Quick Start](#-quick-start) • [API Reference](#-api-reference) • [Documentation](#-documentation)
-
 </div>
 
 ## Overview
