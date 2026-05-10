@@ -15,7 +15,7 @@
 ## Overview
 
 <p align="center">
-  <img src="./docs/images/image.png" alt="_picture" height="400">
+  <img src="./docs/images/image.png" alt="_picture" height="500">
 </p>
 
 ### Key Highlights
@@ -78,7 +78,7 @@
 | **Swagger** | API documentation |
 | **Express Rate Limiter** | DDoS protection |
 
-## 🗄️ Database Schema
+## Database Schema
 
 ```mermaid
 erDiagram
